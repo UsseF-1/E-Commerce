@@ -17,14 +17,14 @@ const authenticate = (req, res, next) => {
 
         req.user = {
             id: decoded.id,
-            role: decoded.role
+            roles: decoded.roles
         }
 
         next();
     }
     catch (err) {
         const error = appError.create("Invalid or expired access token", 401 , httpStatusText.FAIL);
-        next(error);
+        return next(error);
     }
 }
 
