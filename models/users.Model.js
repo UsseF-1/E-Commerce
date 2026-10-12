@@ -21,18 +21,18 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    roles: {
+    role: {
         type: String,
         required: true,
         enum: [usersRoles.ADMIN, usersRoles.CLIENT, usersRoles.SELLER],
         default: usersRoles.CLIENT
     },
+    phone: {
+        type: String,
+        required: true,
+    },
     token: {
         type: String
-    },
-    phone: {
-        type: Number,
-        required: true
     },
     passwordResetToken: {
         type: String

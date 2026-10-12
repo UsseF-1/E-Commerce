@@ -6,7 +6,7 @@ const cookieParser = require("cookie-parser");
 const httpStatusText = require("./utils/httpStatusText")
 const mongoose = require("mongoose");
 const url = process.env.MONGO_URL
-
+const authRoutes = require("./routes/authRoutes")
 
 mongoose.connect(url).then(() => {
     console.log("DB Is Connected!");
@@ -15,6 +15,7 @@ mongoose.connect(url).then(() => {
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors())
+app.use("/api/auth", authRoutes)
 
 // handel not exist routes
 app.all('/{*splat}', (req, res, next) => {
