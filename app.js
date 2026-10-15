@@ -1,0 +1,32 @@
+const express = require("express");
+const app = express();
+const cors = require('cors')
+const cookieParser = require("cookie-parser");
+const httpStatusText = require("./utils/httpStatusText")
+const authRoutes = require("./routes/authRoutes")
+
+app.use(cookieParser());
+app.use(express.json());
+app.use(cors())
+app.use("/api/auth", authRoutes)
+
+// handel not exist routes
+app.all('/{*splat}', (req, res, next) => {
+    return res.status(400).json({Status: httpStatusText.ERROR, message: "NOT FOUND"})
+})
+
+// global error handler
+
+app.use((error, req, res, next) => {
+    const statusCode = error.statusCode || 500;
+
+    return res.status(statusCode).json({
+        status: error.statusText || httpStatusText.ERROR,
+        message: error.message,
+        code: statusCode,
+        data: null
+    });
+});
+
+
+module.exports = app;
