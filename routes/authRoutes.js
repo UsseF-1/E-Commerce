@@ -6,6 +6,14 @@ const {registerValidation, loginValidation} = require("../validations/auth.valid
 
 router.route("/register")
                         .post(registerValidation, validationMiddleware, authController.register)
+
 router.route("/login")
                         .post(loginValidation, validationMiddleware, authController.login)
+
+router.route("/forgot-password")
+                        .post(authController.forgotPassword)
+
+router.route("/reset-password/:token")
+                        .post(authController.resetPassword)
+
 module.exports = router

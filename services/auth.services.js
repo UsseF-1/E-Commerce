@@ -4,6 +4,8 @@ const appError = require("../utils/appError");
 const httpStatusText = require("../utils/httpStatusText");
 const usersRoles = require("../utils/usersRoles");
 const {generateAccessToken, generateRefreshToken, hashRefreshToken} = require("../utils/generateToken");
+const generateResetToken = require("../utils/generateResetToken");
+const emailService = require("./email.service");
 const bcrypt = require("bcryptjs");
 
 const register = async (userData, userAgent) => {
@@ -102,7 +104,86 @@ const login = async (userData, userAgent) => {
     };
 };
 
+const forgotPassword = async (email) => {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        return {
+            message: "If the account exists, a reset link will be sent."
+        };
+    }
+
+    const { resetToken, resetTokenHash } = generateResetToken();
+
+    user.resetPasswordToken = resetTokenHash;
+
+    user.resetPasswordExpires = new Date(
+        Date.now() + 10 * 60 * 1000
+    );
+
+    await user.save();
+
+    const resetURL =
+        `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+
+    await emailService.sendPasswordResetEmail(
+        user.email,
+        resetURL
+    );
+
+    return {
+        message: "If the account exists, a reset link will be sent."
+    };
+};
+
+const resetPassword = async (token, newPassword) => {
+    if (!token || !newPassword) {
+        throw appError.create("Token and new password are required" , 400 , httpStatusText.FAIL);
+    }
+
+    const tokenHash = crypto
+        .createHash("sha256")
+        .update(token)
+        .digest("hex");
+
+    const user = await User.findOne({
+        resetPasswordToken: tokenHash,
+        resetPasswordExpires: { $gt: new Date() }
+    }).select("+resetPasswordToken");
+
+    if (!user) {
+        throw appError.create(
+            "Invalid or expired reset token",
+            400,
+            httpStatusText.FAIL
+        );
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+
+    user.resetPasswordToken = null;
+    user.resetPasswordExpires = null;
+
+    await user.save();
+
+    await RefreshSession.updateMany(
+        {
+            userId: user._id,
+            revokedAt: null
+        },
+        {
+            $set: { revokedAt: new Date() }
+        }
+    );
+
+    return {
+        message: "Password reset successfully"
+    };
+};
+
 module.exports = {
     register,
-    login
+    login,
+    forgotPassword,
+    resetPassword
 };

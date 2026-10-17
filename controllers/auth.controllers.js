@@ -20,10 +20,37 @@ const login = asyncWrapper(async (req, res) => {
     res.status(200).json({
         status: httpStatusText.SUCCESS, 
         message: "Login successfully", 
-        data: {user: result.user,accessToken: result.accessToken}});
+        data: {user: result.user , accessToken: result.accessToken}});
 }) 
+
+const forgotPassword = asyncWrapper(async (req, res) => {
+    const result = await authService.forgotPassword(req.body.email)
+    return res.status(200).json({
+        status: httpStatusText.SUCCESS,
+        message: result.message,
+        data: null
+    });
+})
+
+const resetPassword = asyncWrapper(async (req, res) => {
+    const { token } = req.params;
+    const { newPassword } = req.body;
+
+    const result = await authService.resetPassword(
+        token,
+        newPassword
+    );
+
+    return res.status(200).json({
+        status: httpStatusText.SUCCESS,
+        message: result.message,
+        data: null
+    });
+})
 
 module.exports = {
     register,
     login,
+    forgotPassword,
+    resetPassword
 };
