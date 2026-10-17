@@ -23,6 +23,16 @@ const registerValidation = [
         .withMessage("phone number is required"),
 ]
 
+const loginValidation = [
+    body("email")
+        .notEmpty()
+        .isEmail()
+        .withMessage("Email is required"),
+    body("password")
+        .notEmpty()
+        .withMessage("Password is required"),
+]
 module.exports = {
     registerValidation,
+    loginValidation
 }

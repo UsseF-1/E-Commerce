@@ -60,6 +60,49 @@ const register = async (userData, userAgent) => {
     };
 };
 
+const login = async (userData, userAgent) => {
+    const {email, password} = userData
+
+    if (!email || !password) {
+        throw appError.create("Email and password are required", 400 , httpStatusText.FAIL);
+    }
+
+    const user = await User.findOne({ email }).select("+password");
+
+    if (!user) {
+        throw appError.create("Invalid email or password", 401, httpStatusText.FAIL);
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+        throw appError.create("Invalid email or password", 401, httpStatusText.FAIL);
+    }
+
+    const accessToken = generateAccessToken(user)
+    const refreshToken = generateRefreshToken()
+
+    await RefreshSession.create({
+        userId: user._id,
+        tokenHash: hashRefreshToken(refreshToken),
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        userAgent: userAgent || null
+    });
+
+    return {
+        user: {
+        // id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        role: user.role,
+        },
+        accessToken,
+        refreshToken
+    };
+};
+
 module.exports = {
-    register
+    register,
+    login
 };
