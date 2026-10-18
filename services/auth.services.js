@@ -181,9 +181,30 @@ const resetPassword = async (token, newPassword) => {
     };
 };
 
+const logout = async (refreshToken) => {
+    if (!refreshToken) {
+        return;
+    }
+
+    const tokenHash = hashRefreshToken(refreshToken);
+
+    await RefreshSession.findOneAndUpdate(
+        {
+            tokenHash,
+            revokedAt: null
+        },
+        {
+            $set: {
+                revokedAt: new Date()
+            }
+        }
+    );
+};
+
 module.exports = {
     register,
     login,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    logout
 };

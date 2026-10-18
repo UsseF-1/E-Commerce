@@ -48,9 +48,29 @@ const resetPassword = asyncWrapper(async (req, res) => {
     });
 })
 
+const logout = asyncWrapper(async (req, res) => {
+    const refreshToken = req.cookies?.refreshToken;
+
+    await authService.logout(refreshToken);
+
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/api/auth"
+    });
+
+    return res.status(200).json({
+        status: httpStatusText.SUCCESS,
+        message: "Logged out successfully",
+        data: null
+    });
+});
+
 module.exports = {
     register,
     login,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    logout
 };
