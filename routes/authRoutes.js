@@ -16,4 +16,7 @@ router.route("/forgot-password")
 router.route("/reset-password/:token")
                         .post(authController.resetPassword)
 
+router.route("/logout")
+                        .post(authController.logout)
+
 module.exports = router
