@@ -28,7 +28,22 @@ const createCategory = async (data) => {
     }
 }
 
+const getCategories = async () => {
+    const categories = await Category.find();
+
+    return {
+        categoryData: categories.map((category) => ({
+            categoryId: category._id,
+            name: category.name,
+            description: category.description,
+            createdAt: category.createdAt,
+            updatedAt: category.updatedAt
+        }))
+    };
+};
+
 module.exports = {
     createCategory,
+    getCategories,
 
 }

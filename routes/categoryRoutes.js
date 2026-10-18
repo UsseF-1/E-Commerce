@@ -7,5 +7,6 @@ const authorization = require("../middlewares/authorization")
 
 router.route("/")
                 .post(autheticate, authorization(roles.ADMIN) , categoryControllers.createCategory)
+                .get(autheticate, authorization(roles.ADMIN), categoryControllers.getCategories)
 
 module.exports = router

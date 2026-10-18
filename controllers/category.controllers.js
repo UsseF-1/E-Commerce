@@ -8,7 +8,13 @@ const createCategory = asyncWrapper(async (req , res) => {
     res.status(201).json({Status: httpStatusText.SUCCESS, message: "Category created successfully", data: {result}})
 })
 
+const getCategories = asyncWrapper(async (req, res) => {
+    const result = await categoryServices.getCategories();
+    res.status(200).json({Status: httpStatusText.SUCCESS, message: "Category Displayed successfully", data: {result}})
+})
+
 module.exports = {
     createCategory,
+    getCategories,
 
 }
