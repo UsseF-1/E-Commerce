@@ -4,11 +4,13 @@ const cors = require('cors')
 const cookieParser = require("cookie-parser");
 const httpStatusText = require("./utils/httpStatusText")
 const authRoutes = require("./routes/authRoutes")
+const categoryRoutes = require("./routes/categoryRoutes")
 
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors())
 app.use("/api/auth", authRoutes)
+app.use("/api/categories", categoryRoutes)
 
 // handel not exist routes
 app.all('/{*splat}', (req, res, next) => {
