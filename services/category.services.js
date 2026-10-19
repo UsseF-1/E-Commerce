@@ -20,7 +20,7 @@ const createCategory = async (data) => {
     return {
         categoryData: {
             categoryId: newCategoty._id,
-            name: newCategoty.name,
+            categoryName: newCategoty.categoryName,
             description: newCategoty.description,
             createdAt: newCategoty.createdAt,
             updatedAt: newCategoty.updatedAt
@@ -62,7 +62,7 @@ const updateCategory = async (currentName, updateData) => {
     return {
         categoryData: {
             categoryId: updateCategory._id,
-            name: updateCategory.name,
+            name: updateCategory.categoryName,
             description: updateCategory.description,
             createdAt: updateCategory.createdAt,
             updatedAt: updateCategory.updatedAt

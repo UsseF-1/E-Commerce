@@ -7,6 +7,7 @@ const {generateAccessToken, generateRefreshToken, hashRefreshToken} = require(".
 const generateResetToken = require("../utils/generateResetToken");
 const emailService = require("./email.service");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto")
 
 const register = async (userData, userAgent) => {
     const { firstName, lastName, email, password, role, phone } = userData;
