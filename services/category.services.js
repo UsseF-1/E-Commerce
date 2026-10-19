@@ -59,9 +59,12 @@ const updateCategory = async (currentName, updateData) => {
     }
 }
 
+const deleteCategory = async (currentName) => {
+    const deletedCategory = await Category.findOneAndDelete({categoryName: currentName})
+}
 module.exports = {
     createCategory,
     getCategories,
     updateCategory,
-    
+    deleteCategory
 }

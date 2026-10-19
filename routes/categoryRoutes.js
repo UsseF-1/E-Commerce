@@ -11,5 +11,6 @@ router.route("/")
 
 router.route("/:name")
                     .put(autheticate, authorization(roles.ADMIN), categoryControllers.updateCategory)
+                    .delete(autheticate, authorization(roles.ADMIN), categoryControllers.deleteCategory)                    
 
 module.exports = router

@@ -21,9 +21,15 @@ const updateCategory = asyncWrapper(async (req, res) => {
     res.status(200).json({Status: httpStatusText.SUCCESS, message: "Category Updateed successfully", data: result})
 })
 
+const deleteCategory = asyncWrapper(async (req, res) => {
+    const currentName = req.params.name
+    await categoryServices.deleteCategory(currentName);
+    res.status(200).json({Status: httpStatusText.SUCCESS, message: "Category Deleted successfully", data: null})
+})
+
 module.exports = {
     createCategory,
     getCategories,
     updateCategory,
-
+    deleteCategory
 }
