@@ -29,7 +29,7 @@ const createCategory = async (data) => {
 }
 
 const getCategories = async () => {
-    const categories = await Category.find({}, {"__v": false, "_id": false});
+    const categories = await Category.find({}, {"__v": false});
 
     return {
         categoryData: categories
