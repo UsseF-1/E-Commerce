@@ -36,6 +36,17 @@ const getCategories = async () => {
     };
 };
 
+const getCategory = async(currentName) => {
+    const category = await Category.findOne({categoryName: currentName})
+    if (!category) {
+        throw appError.create("Category is not exsist", 404, httpStatusText.FAIL)
+    }
+
+    return {
+        categoryData: category
+    }
+}
+
 const updateCategory = async (currentName, updateData) => {
     const updateCategory = await Category.findOne({categoryName: currentName})
     if (!updateCategory) {
@@ -65,6 +76,7 @@ const deleteCategory = async (currentName) => {
 module.exports = {
     createCategory,
     getCategories,
+    getCategory,
     updateCategory,
     deleteCategory
 }

@@ -10,6 +10,7 @@ router.route("/")
                 .get(autheticate, authorization(roles.ADMIN), categoryControllers.getCategories)
 
 router.route("/:name")
+                    .get(autheticate, authorization(roles.ADMIN), categoryControllers.getCategory)
                     .put(autheticate, authorization(roles.ADMIN), categoryControllers.updateCategory)
                     .delete(autheticate, authorization(roles.ADMIN), categoryControllers.deleteCategory)                    
 

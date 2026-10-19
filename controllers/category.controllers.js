@@ -13,6 +13,12 @@ const getCategories = asyncWrapper(async (req, res) => {
     res.status(200).json({Status: httpStatusText.SUCCESS, message: "Category Displayed successfully", data: result})
 })
 
+const getCategory = asyncWrapper(async (req, res) => {
+    const currentName = req.params.name
+    const result = await categoryServices.getCategory(currentName);
+    res.status(200).json({Status: httpStatusText.SUCCESS, message: "Category Displayed successfully", data: result})
+})
+
 const updateCategory = asyncWrapper(async (req, res) => {
     const currentName = req.params.name;
     const updateData = req.body;
@@ -30,6 +36,7 @@ const deleteCategory = asyncWrapper(async (req, res) => {
 module.exports = {
     createCategory,
     getCategories,
+    getCategory,
     updateCategory,
     deleteCategory
 }
