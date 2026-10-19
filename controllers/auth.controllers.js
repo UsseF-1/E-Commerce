@@ -67,10 +67,24 @@ const logout = asyncWrapper(async (req, res) => {
     });
 });
 
+const refreshToken = asyncWrapper(async (req, res) => {
+    const incomingRefreshToken = req.cookies?.refreshToken;
+    const result = await authService.refreshToken(incomingRefreshToken);
+
+    return res.status(200).json({
+        status: httpStatusText.SUCCESS,
+        message: "Token refreshed successfully",
+        data: {
+            accessToken: result.accessToken
+        }
+    });
+})
+
 module.exports = {
     register,
     login,
     forgotPassword,
     resetPassword,
-    logout
+    logout,
+    refreshToken
 };

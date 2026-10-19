@@ -19,4 +19,7 @@ router.route("/reset-password/:token")
 router.route("/logout")
                         .post(authController.logout)
 
+router.route("/refresh")
+                        .post(authController.refreshToken);
+
 module.exports = router

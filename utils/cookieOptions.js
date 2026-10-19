@@ -6,4 +6,4 @@ const refreshCookieOptions = {
     maxAge: process.env.REFRESH_TOKEN_TTL_DAYS,
 }
 
-module.exports = refreshCookieOptions
+module.exports = { refreshCookieOptions }

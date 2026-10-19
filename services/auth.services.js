@@ -202,10 +202,39 @@ const logout = async (refreshToken) => {
     );
 };
 
+const refreshToken = async(incomingRefreshToken) => {
+    if (!incomingRefreshToken) {
+        throw appError.create("Refresh token is required", 401, httpStatusText.FAIL);
+    }
+
+    const tokenHash = hashRefreshToken(incomingRefreshToken);
+
+    const session = await RefreshSession.findOne({
+        tokenHash,
+        revokedAt: null,
+        expiresAt: { $gt: new Date() }
+    });
+    if (!session) {
+        throw appError.create("Invalid or expired refresh token", 401, httpStatusText.FAIL);
+    }
+
+    const user = await User.findById(session.userId);
+    if (!user) {
+        throw appError.create("User not found", 404, httpStatusText.FAIL);
+    }
+
+    const newAccessToken = generateAccessToken(user);
+
+    return {
+        accessToken: newAccessToken
+    };
+}
+
 module.exports = {
     register,
     login,
     forgotPassword,
     resetPassword,
-    logout
+    logout,
+    refreshToken
 };
