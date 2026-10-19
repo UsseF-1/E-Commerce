@@ -7,10 +7,10 @@ const authorization = require("../middlewares/authorization")
 
 router.route("/")
                 .post(autheticate, authorization(roles.ADMIN) , categoryControllers.createCategory)
-                .get(autheticate, authorization(roles.ADMIN), categoryControllers.getCategories)
+                .get(autheticate, categoryControllers.getCategories)
 
 router.route("/:name")
-                    .get(autheticate, authorization(roles.ADMIN), categoryControllers.getCategory)
+                    .get(autheticate, categoryControllers.getCategory)
                     .put(autheticate, authorization(roles.ADMIN), categoryControllers.updateCategory)
                     .delete(autheticate, authorization(roles.ADMIN), categoryControllers.deleteCategory)                    
 
