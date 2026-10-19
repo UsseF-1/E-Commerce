@@ -9,4 +9,7 @@ router.route("/")
                 .post(autheticate, authorization(roles.ADMIN) , categoryControllers.createCategory)
                 .get(autheticate, authorization(roles.ADMIN), categoryControllers.getCategories)
 
+router.route("/:name")
+                    .put(autheticate, authorization(roles.ADMIN), categoryControllers.updateCategory)
+
 module.exports = router
