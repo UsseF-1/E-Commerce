@@ -3,7 +3,7 @@ const httpStatusText = require("../utils/httpStatusText")
 
 module.exports = (...roles) => {
     return (req, res, next) => {
-        if (!roles.includes(req.user.role) || !req.user) {
+        if (!req.user || !roles.includes(req.user.role)) {
             const error = appError.create("unauthorized", 401, httpStatusText.FAIL)
             return next(error)
         }
