@@ -94,7 +94,7 @@ const login = async (userData, userAgent) => {
 
     return {
         user: {
-        // id: user._id,
+        id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
