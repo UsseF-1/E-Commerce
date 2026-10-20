@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const productSchema = new mongoose.Schema({
-    ProductName: {
+    productName: {
         type: String,
         required: true
     },
@@ -11,11 +11,13 @@ const productSchema = new mongoose.Schema({
     },
     price: {
         type: Number,
-        required: true
+        required: true,
+        min: 0
     },
     stock: {
         type: Number,
-        required: true
+        required: true,
+        min: 0
     },
     images: {
         type: [String],
@@ -34,7 +36,7 @@ const productSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ["ACTIVE", "INACTIVE"],
-        default: ACTIVE
+        default: "ACTIVE"
     }
 },
 {
