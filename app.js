@@ -16,7 +16,7 @@ app.use("/api/products", productRoutes)
 
 // handel not exist routes
 app.all('/{*splat}', (req, res, next) => {
-    return res.status(400).json({Status: httpStatusText.ERROR, message: "NOT FOUND"})
+    return res.status(404).json({Status: httpStatusText.ERROR, message: "NOT FOUND"})
 })
 
 // global error handler
