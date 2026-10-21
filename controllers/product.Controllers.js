@@ -29,10 +29,16 @@ const deleteProduct = asyncWrapper(async (req, res) => {
     res.status(200).json({Status: httpStatusText.SUCCESS, message: "product deleted successfully", data: null})
 })
 
+const getMyProducts = asyncWrapper(async (req, res) => {
+    const result = await productService.getMyProducts(req.user.id);
+    res.status(200).json({Status: httpStatusText.SUCCESS, message: "product Displayed successfully", data: result})
+})
+
 module.exports = {
     createProduct,
     getProducts,
     getProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getMyProducts
 }

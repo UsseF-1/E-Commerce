@@ -115,10 +115,21 @@ const deleteProduct = async (productId, currentUser) => {
     await Product.findByIdAndDelete(productId)
 }
 
+const getMyProducts = async (sellerId) => {
+    const products = await Product.find({ seller: sellerId })
+        .populate("category", "categoryName")
+        .select("-__v");
+
+    return { 
+        productsData: products 
+    };
+}
+
 module.exports = {
     createProduct,
     getProducts,
     getProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getMyProducts
 }

@@ -10,6 +10,9 @@ const { createProductValidation, updateProductValidation } = require("../validat
 router.route("/")
                     .get(productControllers.getProducts)
 
+router.route("/my-products")
+                    .get(authenticate, authorization(roles.ADMIN, roles.SELLER), productControllers.getMyProducts)
+
                     .post(authenticate, authorization(roles.ADMIN, roles.SELLER), createProductValidation,
                         validationMiddleware, productControllers.createProduct)
 router.route("/:Id")
