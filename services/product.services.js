@@ -1,3 +1,4 @@
+const { buildFilter, buildSort, buildPagination } = require("../utils/queryHelper");
 const Product = require("../models/products.model")
 const Category = require("../models/categories.model");
 const appError = require("../utils/appError")
@@ -51,16 +52,31 @@ const createProduct = async (productData, currentUser) => {
     };
 };
 
-const getProducts = async () => {
-    const products = await Product.find({ status: "ACTIVE" })
+const getProducts = async (queryParams = {}) => {
+    const filter = buildFilter(queryParams);
+
+    const sort = buildSort(queryParams.sort);
+
+    const { page, limit, skip } = buildPagination(queryParams.page, queryParams.limit);
+
+    const totalProducts = await Product.countDocuments(filter);
+
+    const products = await Product.find(filter)
         .populate("category", "categoryName")
         .populate("seller", "firstName lastName email")
+        .sort(sort)
+        .skip(skip)
+        .limit(limit)
         .select("-__v");
 
     return {
+        totalProducts,
+        totalPages: Math.ceil(totalProducts / limit),
+        currentPage: page,
+        limit,
         productsData: products
-    }
-}
+    };
+};
 
 const getProduct = async (productData) => {
     const product = await Product.findById(productData)

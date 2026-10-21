@@ -9,9 +9,14 @@ const createProduct = asyncWrapper(async (req, res) => {
 })
 
 const getProducts = asyncWrapper(async (req, res) => {
-    const result = await productService.getProducts();
-    res.status(200).json({Status: httpStatusText.SUCCESS, message: "products Displayed successfully", data: result})
-})
+    const result = await productService.getProducts(req.query);
+
+    res.status(200).json({
+        Status: httpStatusText.SUCCESS,
+        message: "products displayed successfully",
+        data: result
+    });
+});
 
 const getProduct = asyncWrapper(async (req, res) => {
     const result = await productService.getProduct(req.params.Id);
