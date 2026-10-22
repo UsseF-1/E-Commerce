@@ -12,6 +12,7 @@ router.route("/")
 
                     .post(authenticate, authorization(roles.ADMIN, roles.SELLER), createProductValidation,
                         validationMiddleware, productControllers.createProduct)
+
 router.route("/my-products")
                     .get(authenticate, authorization(roles.ADMIN, roles.SELLER), productControllers.getMyProducts)
 
