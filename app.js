@@ -7,6 +7,7 @@ const authRoutes = require("./routes/authRoutes")
 const categoryRoutes = require("./routes/categoryRoutes")
 const productRoutes = require("./routes/productRoutes")
 const userRoutes = require("./routes/userRoutes")
+const cartRoutes = require("./routes/cartRoutes")
 
 app.use(cookieParser());
 app.use(express.json());
@@ -15,6 +16,7 @@ app.use("/api/auth", authRoutes)
 app.use("/api/categories", categoryRoutes)
 app.use("/api/products", productRoutes)
 app.use("/api/users", userRoutes)
+app.use("/api/carts", cartRoutes)
 
 // handel not exist routes
 app.all('/{*splat}', (req, res, next) => {
@@ -22,7 +24,6 @@ app.all('/{*splat}', (req, res, next) => {
 })
 
 // global error handler
-
 app.use((error, req, res, next) => {
     const statusCode = error.statusCode || 500;
 
