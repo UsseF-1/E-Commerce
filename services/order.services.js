@@ -1,5 +1,5 @@
 const Cart = require("../models/carts.models")
-const Order = require("../models/oreders.model")
+const Order = require("../models/orders.model")
 const Product = require("../models/products.model");
 const appError = require("../utils/appError")
 const httpStatusText = require("../utils/httpStatusText")
